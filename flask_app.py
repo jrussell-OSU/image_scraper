@@ -151,9 +151,11 @@ def respond():
 
     response = {}
 
+    response["IMAGE_URL"] = "ERROR"
+
     # Verify if a word was received
     if not word:
-        response["ERROR"] = "ERROR try again."
+        return jsonify(response)
 
     scraper = ImageScraper()
     scraper.set_word(word)
@@ -166,13 +168,13 @@ def respond():
         # print("No results, trying synonyms...")
         if not scraper.try_synonyms():
             print("No results using synonyms")
-            response["ERROR"] = "ERROR try again."
-            return
+            return jsonify(response)
 
     # If a valid results found, print a random one
     image_url = scraper.get_random_valid_image()
-    response["IMAGE_URL"] = image_url
-    print(image_url)
+    if image_url:
+        response["IMAGE_URL"] = image_url
+    # print(image_url)
 
     return jsonify(response)
 
