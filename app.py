@@ -14,8 +14,8 @@
 import requests
 from bs4 import BeautifulSoup
 import random
-import config  # where my thesuarus api key is
 from flask import Flask, jsonify, request
+import os
 
 app = Flask(__name__)
 
@@ -45,7 +45,7 @@ class ImageScraper:
         self.set_wiki_url()
 
     def set_synonym_url(self):
-        self._synonym_url = config.api_url + config.api_key + self._word + "/json"
+        self._synonym_url = "https://words.bighugelabs.com/api/2/" + os.environ["api_key"] + self._word + "/json"
 
     def set_wiki_url(self):
         self._wiki_url = "https://commons.wikimedia.org/wiki/Category:" + self._word
@@ -151,9 +151,11 @@ def respond():
 
     response = {}
 
+    response["IMAGE_URL"] = "ERROR"
+
     # Verify if a word was received
     if not word:
-        response["ERROR"] = "ERROR try again."
+        return jsonify(response)
 
     scraper = ImageScraper()
     scraper.set_word(word)
@@ -166,38 +168,15 @@ def respond():
         # print("No results, trying synonyms...")
         if not scraper.try_synonyms():
             print("No results using synonyms")
-            response["ERROR"] = "ERROR try again."
-            return
+            return jsonify(response)
 
     # If a valid results found, print a random one
     image_url = scraper.get_random_valid_image()
-    response["IMAGE_URL"] = image_url
-    print(image_url)
+    if image_url:
+        response["IMAGE_URL"] = image_url
 
     return jsonify(response)
 
 
 if __name__ == "__main__":
     app.run()
-
-
-# if running without flask, use below:
-"""
-if __name__ == "__main__":
-    while True:
-        scraper = ImageScraper()
-        scraper.retrieve_word()  # get word from user and set it
-        scraper.retrieve_page_data()
-        scraper.raw_image_urls()
-        scraper.valid_image_urls()
-
-        # If no valid image urls found, try synonyms
-        if not scraper.check_valid_image_urls():
-            # print("No results, trying synonyms...")
-            if not scraper.try_synonyms():
-                print("No results using synonyms")
-                continue
-
-        # If a valid results found, print a random one
-        print(scraper.get_random_valid_image())
-"""

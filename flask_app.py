@@ -56,7 +56,7 @@ class ImageScraper:
 
     def raw_image_urls(self):
         """Takes HTML raw data and returns list of image source urls"""
-        soup = BeautifulSoup(self._html_data, 'html.parser')
+        soup = BeautifulSoup(self._html_data, 'lxml')
         for url in soup.find_all('img'):
             self._raw_image_urls.append(url['src'])
 
