@@ -14,7 +14,7 @@
 import requests
 from bs4 import BeautifulSoup
 import random
-import config  # where my thesuarus api key is
+# import config  # where my thesuarus api key is
 from flask import Flask, jsonify, request
 
 app = Flask(__name__)
