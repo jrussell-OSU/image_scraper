@@ -14,8 +14,8 @@
 import requests
 from bs4 import BeautifulSoup
 import random
-# import config  # where my thesuarus api key is
 from flask import Flask, jsonify, request
+import os
 
 app = Flask(__name__)
 
@@ -45,7 +45,7 @@ class ImageScraper:
         self.set_wiki_url()
 
     def set_synonym_url(self):
-        self._synonym_url = "https://words.bighugelabs.com/api/2/" + "d999c6570845bf90a00367ad595ff1ff/" + self._word + "/json"
+        self._synonym_url = "https://words.bighugelabs.com/api/2/" + os.environ["api_key"] + self._word + "/json"
 
     def set_wiki_url(self):
         self._wiki_url = "https://commons.wikimedia.org/wiki/Category:" + self._word
@@ -174,7 +174,6 @@ def respond():
     image_url = scraper.get_random_valid_image()
     if image_url:
         response["IMAGE_URL"] = image_url
-    # print(image_url)
 
     return jsonify(response)
 
