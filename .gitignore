@@ -3,6 +3,7 @@
 # Custom
 config.py
 previous_verison.py
+app.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
