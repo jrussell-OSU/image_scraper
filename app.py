@@ -153,7 +153,7 @@ def respond():
 
     # Verify if a word was received
     if not word:
-        response["ERROR"] = "No word received, try again."
+        response["ERROR"] = "ERROR try again."
 
     scraper = ImageScraper()
     scraper.set_word(word)
@@ -166,6 +166,7 @@ def respond():
         # print("No results, trying synonyms...")
         if not scraper.try_synonyms():
             print("No results using synonyms")
+            response["ERROR"] = "ERROR try again."
             return
 
     # If a valid results found, print a random one
