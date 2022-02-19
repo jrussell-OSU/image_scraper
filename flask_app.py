@@ -180,25 +180,3 @@ def respond():
 
 if __name__ == "__main__":
     app.run()
-
-
-# if running without flask, use below:
-"""
-if __name__ == "__main__":
-    while True:
-        scraper = ImageScraper()
-        scraper.retrieve_word()  # get word from user and set it
-        scraper.retrieve_page_data()
-        scraper.raw_image_urls()
-        scraper.valid_image_urls()
-
-        # If no valid image urls found, try synonyms
-        if not scraper.check_valid_image_urls():
-            # print("No results, trying synonyms...")
-            if not scraper.try_synonyms():
-                print("No results using synonyms")
-                continue
-
-        # If a valid results found, print a random one
-        print(scraper.get_random_valid_image())
-"""
