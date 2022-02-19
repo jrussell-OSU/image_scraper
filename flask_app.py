@@ -45,7 +45,7 @@ class ImageScraper:
         self.set_wiki_url()
 
     def set_synonym_url(self):
-        self._synonym_url = config.api_url + config.api_key + self._word + "/json"
+        self._synonym_url = "https://words.bighugelabs.com/api/2/" + "d999c6570845bf90a00367ad595ff1ff/" + self._word + "/json"
 
     def set_wiki_url(self):
         self._wiki_url = "https://commons.wikimedia.org/wiki/Category:" + self._word
