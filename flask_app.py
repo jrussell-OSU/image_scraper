@@ -16,6 +16,7 @@ from bs4 import BeautifulSoup
 import random
 from flask import Flask, jsonify, request
 import os
+from flask_cors import cross_origin
 
 app = Flask(__name__)
 
@@ -141,6 +142,7 @@ def index():
 
 # Reference: https://stackabuse.com/deploying-a-flask-application-to-heroku/
 @app.route('/get_image_url/', methods=['GET'])
+@cross_origin()
 def respond():
     scraper = ImageScraper()
 
