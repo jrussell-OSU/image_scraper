@@ -119,10 +119,6 @@ class ImageScraper:
             self._word = self._synonyms[count]
             self.image_scraper(self._word)
             print("Trying synonym: ", self._word)  # for DEBUGGING
-            # self.set_wiki_url()
-            # self.retrieve_page_data()
-            # self.raw_image_urls()
-            # self.valid_image_urls()
             count += 1
         # If we have tried every synonym but still couldn't find a valid image
         if count >= len(self._synonyms):
@@ -157,25 +153,20 @@ def index():
 @cross_origin()  # for CORS
 def respond():
 
-    # extract the word from the url
-    word = request.args.get("word", None)
+    word = request.args.get("word", None)  # extract the word from the url
     print("Word received: ", word)
+    response = {"IMAGE_URL": "ERROR: No image URLs found."}  # set default response as error
 
-    # Set response as Error by default until image URL found
-    response = {"IMAGE_URL": "ERROR"}
-
-    # Verify if a word was received
-    if not word:
+    if not word:  # send error if no word received
         return jsonify(response)
 
     scraper = ImageScraper()
     scraper.image_scraper(word)  # Main function
 
     # If no valid image urls found, try synonyms
-    if not scraper.check_valid_image_urls():
-        if not scraper.try_synonyms():
-            print("No results using synonyms")
-            return jsonify(response)
+    if not scraper.check_valid_image_urls() and not scraper.try_synonyms():
+        print("No results using synonyms.")
+        return jsonify(response)
 
     # If a valid results found, print a random one
     image_url = scraper.get_random_valid_image()
